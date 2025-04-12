@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import React, { forwardRef } from 'react'
-import { Link } from './link'
+import { Link } from 'react-router-dom'
 
 const styles = {
   base: [
@@ -185,7 +185,7 @@ export const Button = forwardRef(function Button(
       {...props} 
       className={clsx(classes, 'cursor-default')} 
       ref={ref as React.ForwardedRef<HTMLButtonElement>}
-      type={props.type || 'button'}
+      type={(props.type as "button" | "submit" | "reset") || "button"}
     >
       <TouchTarget>{children}</TouchTarget>
     </button>

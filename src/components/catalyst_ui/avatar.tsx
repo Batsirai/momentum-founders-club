@@ -2,7 +2,7 @@
 import clsx from 'clsx'
 import React, { forwardRef } from 'react'
 import { TouchTarget } from './button'
-import { Link } from './link'
+import { Link } from 'react-router-dom'
 
 type AvatarProps = {
   src?: string | null
@@ -26,7 +26,7 @@ export function Avatar({
       {...props}
       className={clsx(
         className,
-        // Basic layout
+        // Base layout
         'inline-grid shrink-0 align-middle [--avatar-radius:20%] *:col-start-1 *:row-start-1',
         'outline -outline-offset-1 outline-black/10 dark:outline-white/10',
         // Border radius
@@ -68,14 +68,14 @@ export const AvatarButton = forwardRef(function AvatarButton(
     'relative inline-grid focus:outline-hidden data-focus:outline-2 data-focus:outline-offset-2 data-focus:outline-blue-500'
   )
 
-  return 'href' in props ? (
+  return 'to' in props ? (
     <Link {...props} className={classes} ref={ref as React.ForwardedRef<HTMLAnchorElement>}>
       <TouchTarget>
         <Avatar src={src} square={square} initials={initials} alt={alt} />
       </TouchTarget>
     </Link>
   ) : (
-    <button {...props} className={classes} ref={ref as React.ForwardedRef<HTMLButtonElement>}>
+    <button {...props} className={classes} ref={ref as React.ForwardedRef<HTMLButtonElement>} type={(props.type as "button" | "submit" | "reset") || "button"}>
       <TouchTarget>
         <Avatar src={src} square={square} initials={initials} alt={alt} />
       </TouchTarget>

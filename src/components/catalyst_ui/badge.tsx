@@ -1,8 +1,8 @@
-import * as Headless from '@headlessui/react'
+
 import clsx from 'clsx'
 import React, { forwardRef } from 'react'
 import { TouchTarget } from './button'
-import { Link } from './link'
+import { Link } from 'react-router-dom'
 
 const colors = {
   red: 'bg-red-500/15 text-red-700 group-data-hover:bg-red-500/25 dark:bg-red-500/10 dark:text-red-400 dark:group-data-hover:bg-red-500/20',
@@ -56,8 +56,8 @@ export const BadgeButton = forwardRef(function BadgeButton(
     children,
     ...props
   }: BadgeProps & { className?: string; children: React.ReactNode } & (
-      | Omit<Headless.ButtonProps, 'as' | 'className'>
-      | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
+      | React.ButtonHTMLAttributes<HTMLButtonElement>
+      | React.ComponentPropsWithoutRef<typeof Link>
     ),
   ref: React.ForwardedRef<HTMLElement>
 ) {
@@ -66,17 +66,17 @@ export const BadgeButton = forwardRef(function BadgeButton(
     'group relative inline-flex rounded-md focus:outline-hidden data-focus:outline-2 data-focus:outline-offset-2 data-focus:outline-blue-500'
   )
 
-  return 'href' in props ? (
+  return 'to' in props ? (
     <Link {...props} className={classes} ref={ref as React.ForwardedRef<HTMLAnchorElement>}>
       <TouchTarget>
         <Badge color={color}>{children}</Badge>
       </TouchTarget>
     </Link>
   ) : (
-    <Headless.Button {...props} className={classes} ref={ref}>
+    <button {...props} className={classes} ref={ref as React.ForwardedRef<HTMLButtonElement>} type={(props.type as "button" | "submit" | "reset") || "button"}>
       <TouchTarget>
         <Badge color={color}>{children}</Badge>
       </TouchTarget>
-    </Headless.Button>
+    </button>
   )
 })
