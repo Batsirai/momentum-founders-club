@@ -137,7 +137,7 @@ const SignupPage = () => {
           </Text>
           <Text className="mt-4">
             Already have an account?{' '}
-            <TextLink href="/login">
+            <TextLink to="/login">
               Log in
             </TextLink>
           </Text>

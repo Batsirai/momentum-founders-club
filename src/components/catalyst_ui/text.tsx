@@ -1,39 +1,44 @@
+
 import clsx from 'clsx'
-import { Link } from './link'
+import type React from 'react'
+import { Link, type LinkProps } from 'react-router-dom'
 
 export function Text({ className, ...props }: React.ComponentPropsWithoutRef<'p'>) {
   return (
     <p
+      {...props}
       data-slot="text"
-      {...props}
-      className={clsx(className, 'text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400')}
-    />
-  )
-}
-
-export function TextLink({ className, ...props }: React.ComponentPropsWithoutRef<typeof Link>) {
-  return (
-    <Link
-      {...props}
       className={clsx(
         className,
-        'text-zinc-950 underline decoration-zinc-950/50 data-hover:decoration-zinc-950 dark:text-white dark:decoration-white/50 dark:data-hover:decoration-white'
+        'text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400 forced-colors:text-[CanvasText]'
       )}
     />
   )
 }
 
-export function Strong({ className, ...props }: React.ComponentPropsWithoutRef<'strong'>) {
-  return <strong {...props} className={clsx(className, 'font-medium text-zinc-950 dark:text-white')} />
+export function TextLink({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'a'> & LinkProps) {
+  return (
+    <Link
+      {...props}
+      data-slot="link"
+      className={clsx(
+        className,
+        'font-semibold text-zinc-950 underline decoration-zinc-950/50 underline-offset-2 data-hover:decoration-zinc-950 dark:text-white dark:decoration-white/50 dark:data-hover:decoration-white forced-colors:text-[LinkText] forced-colors:decoration-[LinkText]'
+      )}
+    />
+  )
 }
 
-export function Code({ className, ...props }: React.ComponentPropsWithoutRef<'code'>) {
+export function InlineLink({ className, ...props }: React.ComponentPropsWithoutRef<typeof Link>) {
   return (
-    <code
+    <Link
       {...props}
       className={clsx(
         className,
-        'rounded-sm border border-zinc-950/10 bg-zinc-950/[2.5%] px-0.5 text-sm font-medium text-zinc-950 sm:text-[0.8125rem] dark:border-white/20 dark:bg-white/5 dark:text-white'
+        'font-medium text-zinc-950 underline decoration-zinc-950/50 underline-offset-2 data-hover:decoration-zinc-950 dark:text-white dark:decoration-white/50 dark:data-hover:decoration-white forced-colors:text-[LinkText] forced-colors:decoration-[LinkText]'
       )}
     />
   )
