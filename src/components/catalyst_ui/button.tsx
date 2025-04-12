@@ -1,6 +1,7 @@
+
 import clsx from 'clsx'
 import React, { forwardRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, type LinkProps } from './link'
 
 const styles = {
   base: [
@@ -162,8 +163,8 @@ type ButtonProps = (
   | { color?: never; outline: true; plain?: never }
   | { color?: never; outline?: never; plain: true }
 ) & { className?: string; children: React.ReactNode } & (
-    | Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className'>
-    | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
+    | (Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className'> & { href?: never; to?: never })
+    | (Omit<LinkProps, 'className'>)
   )
 
 export const Button = forwardRef(function Button(
@@ -176,16 +177,16 @@ export const Button = forwardRef(function Button(
     outline ? styles.outline : plain ? styles.plain : clsx(styles.solid, styles.colors[color ?? 'dark/zinc'])
   )
 
-  return 'href' in props ? (
+  return ('href' in props || 'to' in props) ? (
     <Link {...props} className={classes} ref={ref as React.ForwardedRef<HTMLAnchorElement>}>
       <TouchTarget>{children}</TouchTarget>
     </Link>
   ) : (
     <button 
-      {...props} 
+      {...props as React.ButtonHTMLAttributes<HTMLButtonElement>} 
       className={clsx(classes, 'cursor-default')} 
       ref={ref as React.ForwardedRef<HTMLButtonElement>}
-      type={(props.type as "button" | "submit" | "reset") || "button"}
+      type={(props as any).type || "button"}
     >
       <TouchTarget>{children}</TouchTarget>
     </button>

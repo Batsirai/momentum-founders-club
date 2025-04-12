@@ -1,3 +1,4 @@
+
 'use client'
 
 import * as Headless from '@headlessui/react'
@@ -36,8 +37,8 @@ export const NavbarItem = forwardRef(function NavbarItem(
     children,
     ...props
   }: { current?: boolean; className?: string; children: React.ReactNode } & (
-    | Omit<Headless.ButtonProps, 'as' | 'className'>
-    | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
+    | React.ButtonHTMLAttributes<HTMLButtonElement>
+    | React.ComponentPropsWithoutRef<typeof Link>
   ),
   ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>
 ) {
@@ -68,9 +69,9 @@ export const NavbarItem = forwardRef(function NavbarItem(
           className="absolute inset-x-2 -bottom-2.5 h-0.5 rounded-full bg-zinc-950 dark:bg-white"
         />
       )}
-      {'href' in props ? (
+      {'href' in props || 'to' in props ? (
         <Link
-          {...props}
+          {...props as React.ComponentPropsWithoutRef<typeof Link>}
           className={classes}
           data-current={current ? 'true' : undefined}
           ref={ref as React.ForwardedRef<HTMLAnchorElement>}
@@ -78,14 +79,15 @@ export const NavbarItem = forwardRef(function NavbarItem(
           <TouchTarget>{children}</TouchTarget>
         </Link>
       ) : (
-        <Headless.Button
-          {...props}
+        <button
+          {...props as React.ButtonHTMLAttributes<HTMLButtonElement>}
+          type="button"
           className={clsx('cursor-default', classes)}
           data-current={current ? 'true' : undefined}
-          ref={ref}
+          ref={ref as React.ForwardedRef<HTMLButtonElement>}
         >
           <TouchTarget>{children}</TouchTarget>
-        </Headless.Button>
+        </button>
       )}
     </span>
   )

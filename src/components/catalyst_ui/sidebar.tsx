@@ -1,3 +1,4 @@
+
 'use client'
 
 import * as Headless from '@headlessui/react'
@@ -78,8 +79,8 @@ export const SidebarItem = forwardRef(function SidebarItem(
     children,
     ...props
   }: { current?: boolean; className?: string; children: React.ReactNode } & (
-    | Omit<Headless.ButtonProps, 'as' | 'className'>
-    | Omit<Headless.ButtonProps<typeof Link>, 'as' | 'className'>
+    | React.ButtonHTMLAttributes<HTMLButtonElement>
+    | React.ComponentPropsWithoutRef<typeof Link>
   ),
   ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>
 ) {
@@ -113,25 +114,25 @@ export const SidebarItem = forwardRef(function SidebarItem(
           className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-zinc-950 dark:bg-white"
         />
       )}
-      {'href' in props ? (
-        <Headless.CloseButton
-          as={Link}
-          {...props}
+      {'href' in props || 'to' in props ? (
+        <Link
+          {...props as React.ComponentPropsWithoutRef<typeof Link>}
           className={classes}
           data-current={current ? 'true' : undefined}
-          ref={ref}
+          ref={ref as React.ForwardedRef<HTMLAnchorElement>}
         >
           <TouchTarget>{children}</TouchTarget>
-        </Headless.CloseButton>
+        </Link>
       ) : (
-        <Headless.Button
-          {...props}
+        <button
+          {...props as React.ButtonHTMLAttributes<HTMLButtonElement>}
+          type="button"
           className={clsx('cursor-default', classes)}
           data-current={current ? 'true' : undefined}
-          ref={ref}
+          ref={ref as React.ForwardedRef<HTMLButtonElement>}
         >
           <TouchTarget>{children}</TouchTarget>
-        </Headless.Button>
+        </button>
       )}
     </span>
   )
