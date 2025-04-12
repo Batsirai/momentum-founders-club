@@ -5,31 +5,48 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from 'react-router-dom';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 
 const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // This is a placeholder for Supabase signup
-      console.log('Signup with:', email, password);
-      toast({
-        title: "Account created!",
-        description: "You'll be added to our waitlist and notified when your account is approved.",
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
       });
-    } catch (error) {
+
+      if (error) {
+        throw error;
+      }
+
+      // Check if user was created successfully
+      if (data.user) {
+        toast({
+          title: "Account Created",
+          description: "Please check your email to confirm your account.",
+        });
+        
+        // Redirect to dashboard or home page
+        navigate('/dashboard');
+      }
+    } catch (error: any) {
       toast({
-        title: "Error signing up",
-        description: "There was a problem creating your account.",
+        title: "Signup Error",
+        description: error.message || "There was a problem creating your account.",
         variant: "destructive",
       });
-      console.error('Signup error:', error);
     } finally {
       setLoading(false);
     }
@@ -48,25 +65,40 @@ const SignupPage = () => {
           <form onSubmit={handleSignup} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="your@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="pl-10"
+                />
+              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="pl-10 pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
             <Button
               type="submit"
@@ -84,10 +116,18 @@ const SignupPage = () => {
           </div>
 
           <div className="space-y-2">
-            <Button variant="outline" className="w-full">
+            <Button 
+              variant="outline" 
+              className="w-full"
+              onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}
+            >
               Continue with Google
             </Button>
-            <Button variant="outline" className="w-full">
+            <Button 
+              variant="outline" 
+              className="w-full"
+              onClick={() => supabase.auth.signInWithOAuth({ provider: 'github' })}
+            >
               Continue with GitHub
             </Button>
           </div>
