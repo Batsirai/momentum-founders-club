@@ -1,7 +1,7 @@
 
 import clsx from 'clsx'
 import type React from 'react'
-import { Link, type LinkProps } from 'react-router-dom'
+import { Link as RouterLink, type LinkProps } from 'react-router-dom'
 
 export function Text({ className, ...props }: React.ComponentPropsWithoutRef<'p'>) {
   return (
@@ -16,12 +16,9 @@ export function Text({ className, ...props }: React.ComponentPropsWithoutRef<'p'
   )
 }
 
-export function TextLink({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<'a'> & LinkProps) {
+export function TextLink({ className, ...props }: React.ComponentPropsWithoutRef<'a'> & LinkProps) {
   return (
-    <Link
+    <RouterLink
       {...props}
       data-slot="link"
       className={clsx(
@@ -32,9 +29,9 @@ export function TextLink({
   )
 }
 
-export function InlineLink({ className, ...props }: React.ComponentPropsWithoutRef<typeof Link>) {
+export function InlineLink({ className, ...props }: React.ComponentPropsWithoutRef<typeof RouterLink>) {
   return (
-    <Link
+    <RouterLink
       {...props}
       className={clsx(
         className,
