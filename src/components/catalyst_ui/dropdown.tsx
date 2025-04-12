@@ -11,10 +11,11 @@ export function Dropdown(props: Headless.MenuProps) {
 }
 
 export function DropdownButton<T extends React.ElementType = typeof Button>({
-  as = Button,
+  as,
   ...props
-}: { className?: string } & Omit<Headless.MenuButtonProps<T>, 'className'>) {
-  return <Headless.MenuButton as={as} {...props} />
+}: { as?: T; className?: string } & Omit<Headless.MenuButtonProps<T>, 'className'>) {
+  const Component = as || Button
+  return <Headless.MenuButton as={Component} {...props} />
 }
 
 export function DropdownMenu({
@@ -78,11 +79,11 @@ export function DropdownItem({
     '*:data-[slot=avatar]:mr-2.5 *:data-[slot=avatar]:-ml-1 *:data-[slot=avatar]:size-6 sm:*:data-[slot=avatar]:mr-2 sm:*:data-[slot=avatar]:size-5'
   )
 
-  return 'href' in props ? (
-    <Headless.MenuItem as={Link} {...props} className={classes} />
-  ) : (
-    <Headless.MenuItem as="button" type="button" {...props} className={classes} />
-  )
+  if ('href' in props || 'to' in props) {
+    return <Headless.MenuItem as={Link} {...props} className={classes} />
+  } else {
+    return <Headless.MenuItem as="button" type="button" {...props} className={classes} />
+  }
 }
 
 export function DropdownHeader({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {

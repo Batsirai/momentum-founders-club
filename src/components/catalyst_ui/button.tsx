@@ -163,7 +163,7 @@ type ButtonProps = (
   | { color?: never; outline: true; plain?: never }
   | { color?: never; outline?: never; plain: true }
 ) & { className?: string; children: React.ReactNode } & (
-    | (Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className'> & { href?: never; to?: never })
+    | (Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className'> & { href?: undefined; to?: undefined })
     | (Omit<LinkProps, 'className'>)
   )
 
@@ -177,11 +177,19 @@ export const Button = forwardRef(function Button(
     outline ? styles.outline : plain ? styles.plain : clsx(styles.solid, styles.colors[color ?? 'dark/zinc'])
   )
 
-  return ('href' in props || 'to' in props) ? (
-    <Link {...props} className={classes} ref={ref as React.ForwardedRef<HTMLAnchorElement>}>
-      <TouchTarget>{children}</TouchTarget>
-    </Link>
-  ) : (
+  if ('href' in props || 'to' in props) {
+    return (
+      <Link 
+        {...props as LinkProps} 
+        className={classes} 
+        ref={ref as React.ForwardedRef<HTMLAnchorElement>}
+      >
+        <TouchTarget>{children}</TouchTarget>
+      </Link>
+    )
+  }
+  
+  return (
     <button 
       {...props as React.ButtonHTMLAttributes<HTMLButtonElement>} 
       className={clsx(classes, 'cursor-default')} 

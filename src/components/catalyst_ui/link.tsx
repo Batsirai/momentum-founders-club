@@ -19,4 +19,3 @@ export const Link = forwardRef(function Link(
     <RouterLink to={destination} {...rest} ref={ref} />
   )
 })
-

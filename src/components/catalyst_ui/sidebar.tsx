@@ -106,15 +106,15 @@ export const SidebarItem = forwardRef(function SidebarItem(
     'dark:data-current:*:data-[slot=icon]:fill-white'
   )
 
-  return (
-    <span className={clsx(className, 'relative')}>
-      {current && (
-        <motion.span
-          layoutId="current-indicator"
-          className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-zinc-950 dark:bg-white"
-        />
-      )}
-      {'href' in props || 'to' in props ? (
+  if ('href' in props || 'to' in props) {
+    return (
+      <span className={clsx(className, 'relative')}>
+        {current && (
+          <motion.span
+            layoutId="current-indicator"
+            className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-zinc-950 dark:bg-white"
+          />
+        )}
         <Link
           {...props as React.ComponentPropsWithoutRef<typeof Link>}
           className={classes}
@@ -123,7 +123,17 @@ export const SidebarItem = forwardRef(function SidebarItem(
         >
           <TouchTarget>{children}</TouchTarget>
         </Link>
-      ) : (
+      </span>
+    )
+  } else {
+    return (
+      <span className={clsx(className, 'relative')}>
+        {current && (
+          <motion.span
+            layoutId="current-indicator"
+            className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-zinc-950 dark:bg-white"
+          />
+        )}
         <button
           {...props as React.ButtonHTMLAttributes<HTMLButtonElement>}
           type="button"
@@ -133,9 +143,9 @@ export const SidebarItem = forwardRef(function SidebarItem(
         >
           <TouchTarget>{children}</TouchTarget>
         </button>
-      )}
-    </span>
-  )
+      </span>
+    )
+  }
 })
 
 export function SidebarLabel({ className, ...props }: React.ComponentPropsWithoutRef<'span'>) {
