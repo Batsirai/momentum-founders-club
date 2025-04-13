@@ -78,15 +78,17 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <img
-            alt="First99K"
-            src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-            className="mx-auto h-10 w-auto mb-4"
-          />
-          <CardTitle>Create your account</CardTitle>
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader className="text-center space-y-4">
+          <div className="mx-auto bg-primary/10 p-3 rounded-full w-14 h-14 flex items-center justify-center">
+            <img
+              alt="Logo"
+              src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=blue&shade=600"
+              className="h-8 w-auto"
+            />
+          </div>
+          <CardTitle className="text-2xl font-bold">Create your account</CardTitle>
           <CardDescription>Sign up to access all features</CardDescription>
         </CardHeader>
         
@@ -94,13 +96,17 @@ const SignupPage = () => {
           <form onSubmit={handleSignup} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="email">Email address</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="pl-10"
+                  required
+                />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -111,14 +117,16 @@ const SignupPage = () => {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className="pl-10"
                   required
                 />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </Button>
@@ -134,8 +142,8 @@ const SignupPage = () => {
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-muted-foreground">Or continue with</span>
+            <div className="relative flex justify-center text-xs">
+              <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
             </div>
           </div>
 
