@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
@@ -14,7 +13,8 @@ import {
   CardFooter 
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/catalyst_ui/input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const SignupPage = () => {
   const [email, setEmail] = useState('');
@@ -78,7 +78,7 @@ const SignupPage = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
-      <Card className="w-full max-w-md border">
+      <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <img
             alt="First99K"
@@ -91,24 +91,19 @@ const SignupPage = () => {
         
         <CardContent>
           <form onSubmit={handleSignup} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email address
-              </label>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email address</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full"
               />
             </div>
 
-            <div className="relative">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -116,15 +111,16 @@ const SignupPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full pr-10"
                 />
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="icon"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </Button>
               </div>
             </div>
 
@@ -135,10 +131,10 @@ const SignupPage = () => {
 
           <div className="relative mt-6">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-gray-300" />
+              <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or continue with</span>
+              <span className="bg-white px-2 text-muted-foreground">Or continue with</span>
             </div>
           </div>
 
@@ -148,7 +144,7 @@ const SignupPage = () => {
               onClick={() => handleOAuthSignup('google')}
               className="flex items-center justify-center"
             >
-              <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 mr-2">
+              <svg viewBox="0 0 24 24" className="h-5 w-5 mr-2" aria-hidden="true">
                 <path
                   d="M12.0003 4.75C13.7703 4.75 15.3553 5.36002 16.6053 6.54998L20.0303 3.125C17.9502 1.19 15.2353 0 12.0003 0C7.31028 0 3.25527 2.69 1.28027 6.60998L5.27028 9.70498C6.21525 6.86002 8.87028 4.75 12.0003 4.75Z"
                   fill="#EA4335"
@@ -187,9 +183,9 @@ const SignupPage = () => {
         </CardContent>
 
         <CardFooter className="justify-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Already have an account?{' '}
-            <Link to="/login" className="font-semibold text-purple-600 hover:text-purple-500">
+            <Link to="/login" className="font-semibold text-primary hover:text-primary/90">
               Log in
             </Link>
           </p>
